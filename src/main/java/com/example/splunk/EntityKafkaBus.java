@@ -4,6 +4,7 @@ import java.lang.*;
 import java.util.*;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.clients.producer.KafkaProducer;
 import java.time.*;
 
 
@@ -21,16 +22,29 @@ public class EntityKafkaBus {
         props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         this.topic = topic;
+        //create producer
+        try {
+            producer = new KafkaProducer<Integer, String>(props);
+        }
+        catch(Exception e)  {
+            e.printStackTrace();
+        }
+
 
     }
 
     public void sendJson(String splunkLog)   {
 
-        ProducerRecord producerRecord = new ProducerRecord<String, String>(this.topic, Instant.now().toString(),  splunkLog);
-        producer.send(producerRecord);
+        System.out.println("sending: " + splunkLog + " to topic: " + topic);
+
+        try {
+            ProducerRecord producerRecord = new ProducerRecord<String, String>(this.topic, Instant.now().toString(), splunkLog);
+            producer.send(producerRecord);
+        }
+        catch(Exception e)  {
+            e.printStackTrace();
+        }
 
     }
-
-
 
 }

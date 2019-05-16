@@ -3,6 +3,7 @@ package com.example.splunk;
 import com.splunk.*;
 import java.io.*;
 import java.util.*;
+import com.google.common.base.Splitter;
 
 public class SplunkEngine   {
 
@@ -93,8 +94,37 @@ public class SplunkEngine   {
         ResultsReaderJson resultsReader = new ResultsReaderJson(inpStream);
         Event event = null;
         while ((event = resultsReader.getNextEvent()) != null) {
-            //System.out.println(event.toString());
-            kafkaClient.sendJson(event.toString());
+            // Bad Workaround: I need to redefine the json to be more miningful (to double check splun rest api)
+            while ((event = resultsReader.getNextEvent()) != null) {
+                String finalJson = "{";
+                for (String key: event.keySet()) {
+                    if (key.equals("_raw")) {
+                        String tmpjson = "timestamp=";
+                        String values = tmpjson + event.get(key);
+
+                        Map<String, String> properties = Splitter.on(", ").withKeyValueSeparator("=").split(values);
+                        for (String key2: properties.keySet()) {
+                            if(key2.equals("timestamp")) {
+                                finalJson += "\"" + key2 + "\"" + ": \"" + properties.get(key2) + "\", ";
+                            }
+                            else
+                                finalJson += "\"" + key2 + "\"" + ":" + properties.get(key2) + ", ";
+                        }
+
+                    } else  {
+                        finalJson += "\"" + key + "\"" + ":\"" + event.get(key) + "\", ";
+                    }
+                }
+                if(finalJson.endsWith(", "))
+                {
+                    finalJson = finalJson.substring(0,finalJson.length() - 2);
+                    finalJson += "}";
+                }
+
+               kafkaClient.sendJson(finalJson);
+
+
+            }
         }
 
 
