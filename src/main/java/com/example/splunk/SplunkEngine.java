@@ -95,36 +95,34 @@ public class SplunkEngine   {
         Event event = null;
         while ((event = resultsReader.getNextEvent()) != null) {
             // Bad Workaround: I need to redefine the json to be more miningful (to double check splun rest api)
-            while ((event = resultsReader.getNextEvent()) != null) {
-                String finalJson = "{";
-                for (String key: event.keySet()) {
-                    if (key.equals("_raw")) {
-                        String tmpjson = "timestamp=";
-                        String values = tmpjson + event.get(key);
 
-                        Map<String, String> properties = Splitter.on(", ").withKeyValueSeparator("=").split(values);
-                        for (String key2: properties.keySet()) {
-                            if(key2.equals("timestamp")) {
-                                finalJson += "\"" + key2 + "\"" + ": \"" + properties.get(key2) + "\", ";
-                            }
-                            else
-                                finalJson += "\"" + key2 + "\"" + ":" + properties.get(key2) + ", ";
+            String finalJson = "{";
+            for (String key: event.keySet()) {
+                if (key.equals("_raw")) {
+                    String tmpjson = "timestamp=";
+                    String values = tmpjson + event.get(key);
+
+                    Map<String, String> properties = Splitter.on(", ").withKeyValueSeparator("=").split(values);
+                    for (String key2: properties.keySet()) {
+                        if(key2.equals("timestamp")) {
+                            finalJson += "\"" + key2 + "\"" + ": \"" + properties.get(key2) + "\", ";
                         }
-
-                    } else  {
-                        finalJson += "\"" + key + "\"" + ":\"" + event.get(key) + "\", ";
+                        else
+                            finalJson += "\"" + key2 + "\"" + ":" + properties.get(key2) + ", ";
                     }
+
+                } else  {
+                    finalJson += "\"" + key + "\"" + ":\"" + event.get(key) + "\", ";
                 }
-                if(finalJson.endsWith(", "))
-                {
-                    finalJson = finalJson.substring(0,finalJson.length() - 2);
-                    finalJson += "}";
-                }
-
-               kafkaClient.sendJson(finalJson);
-
-
             }
+            if(finalJson.endsWith(", "))
+            {
+                finalJson = finalJson.substring(0,finalJson.length() - 2);
+                finalJson += "}";
+            }
+
+            //System.out.println(finalJson + "\n");
+            kafkaClient.sendJson(finalJson);
         }
 
 
