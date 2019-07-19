@@ -55,48 +55,49 @@ CREATE TABLE public.services (</br>
 
 ### 4. Start gpss server and gpsscli:
 Start gpss server and set a gpsscli job which will listen on the specified broker and topic. In my case for example gpss yaml is the one specified:
-
 ```
-DATABASE: dashboard</br>
-USER: gpadmin</br>
-HOST: localhost</br>
-PORT: 5432</br>
-KAFKA:</br>
-   INPUT:</br>
-     SOURCE:</br>
-        BROKERS: 172.16.125.1:9092</br>
-        TOPIC: zzzzz</br>
-     COLUMNS</br>:
-        - NAME: jdata</br>
-          TYPE: json</br>
-     FORMAT: json</br>
-     ERROR_LIMIT: 10</br>
-   OUTPUT:</br>
-     TABLE: services</br>
-     MAPPING:</br>
-        - NAME: id</br>
-          EXPRESSION: (jdata->>'id')::int</br>
-        - NAME: version</br>
-          EXPRESSION: (jdata->>'version')::int</br>
-        - NAME: environment</br>
-          EXPRESSION: (jdata->>'environment')::varchar(255)</br>
-        - NAME: service_level</br>
-          EXPRESSION: (jdata->>'service_level')::varchar(22)</br>
-        - NAME: company_id</br>
-          EXPRESSION: (jdata->>'company_id')::int</br>
-        - NAME: top_service</br>
-          EXPRESSION: (jdata->>'top_service')::varchar(3)</br>
-        - NAME: name</br>
-          EXPRESSION: (jdata->>'name')::varchar(255)</br>
+DATABASE: dashboard
+USER: gpadmin
+HOST: localhost
+PORT: 5432
+KAFKA:
+   INPUT:
+     SOURCE:
+        BROKERS: 172.16.125.1:9092
+        TOPIC: zzzzz
+     COLUMNS:
+        - NAME: jdata
+          TYPE: json
+     FORMAT: json
+     ERROR_LIMIT: 10
+   OUTPUT:
+     TABLE: services
+     MAPPING:
+        - NAME: id
+          EXPRESSION: (jdata->>'id')::int
+        - NAME: version
+          EXPRESSION: (jdata->>'version')::int
+        - NAME: environment
+          EXPRESSION: (jdata->>'environment')::varchar(255)
+        - NAME: service_level
+          EXPRESSION: (jdata->>'service_level')::varchar(22)
+        - NAME: company_id
+          EXPRESSION: (jdata->>'company_id')::int
+        - NAME: top_service
+          EXPRESSION: (jdata->>'top_service')::varchar(3)
+        - NAME: name
+          EXPRESSION: (jdata->>'name')::varchar(255)
 
-   COMMIT:</br>
+   COMMIT:
      MAX_ROW: 1000
-     ```    
-     **Note: Messages are posted in Kakfa as Json in order to give the maximum flexibity on what we need and what we don't**</br>     
+ ```
+ 
+ **Note: Messages are posted in Kakfa as Json in order to give the maximum flexibity on what we need and what we don't**</br>     
      
 ### 5. The software is written in Java so you need a JVM installed as well as Splunk
 You need also to create a .splunkrc  in your home directory specifying connection parameters like: </br>  
 
+```
 host=localhost 
 #Splunk admin port (default: 8089) </br> 
 port=8089   </br> 
@@ -108,15 +109,18 @@ password=XXXXXX
 scheme=https  
 #Splunk version number   
 version=7.2.6   
- </br>
+``` 
+</br>
+
 ## Running the software:
 ### 1. Configuration file: </br>  
 The software is written in Java. in /target directory in you find the .jar file that can be executed. Also it needs a kafka.properties initialization file.
 Here you must specify the following info regarding the kafka broker </br>   
-
+```
 host:localhost  
 port:9092  
-topic:zzzzz</br>  
+topic:zzzzz<  
+``` 
 
 ### 2. Run the jar </br>  
 Run the .jar in this way to search for all logs listed in Splunk (taking just the first 100 elements but you can specify more)</br>  
@@ -128,10 +132,12 @@ You can also specify different type of searches </br>
 ### 3. Look at the messages inserted in the topic </br> 
 Information are stored as following (as you can look to the consolle:</br> 
 
+``` 
 {"_bkt":"main~2~3E1FBD62-AB28-4A3C-93D0-5D509AC308D9", "_cd":"2:13577445", "_serial":"96", "timestamp": "2019-05-16 16:42:40.632", "id":"10331", "version":"0", "environment":"Test", "service_level":"AO-Basic", "company_id":"42", "top_service":"NO", "name":"NAVIGATION (VF360)-TEST", "splunk_server":"Danieles-MBP.station", "index":"main", "source":"dahsboard", "_indextime":"1558017760", "_subsecond":".632", "linecount":"1", "_si":"Danieles-MBP.station,main", "host":"localhost", "_sourcetype":"string", "sourcetype":"string", "_time":"2019-05-16T16:42:40.632+02:00"} to topic: zzzzz</br> 
 sending: {"_bkt":"main~2~3E1FBD62-AB28-4A3C-93D0-5D509AC308D9", "_cd":"2:13577439", "_serial":"97", "timestamp": "2019-05-16 16:42:40.632", "id":"10330", "version":"0", "environment":"Test", "service_level":"AO-Basic", "company_id":"2", "top_service":"NO", "name":"MULTIMEDIA MESSAGING SERVICE_TEST", "splunk_server":"Danieles-MBP.station", "index":"main", "source":"dahsboard", "_indextime":"1558017760", "_subsecond":".632", "linecount":"1", "_si":"Danieles-MBP.station,main", "host":"localhost", "_sourcetype":"string", "sourcetype":"string", "_time":"2019-05-16T16:42:40.632+02:00"} to topic: zzzzz</br> 
 sending: {"_bkt":"main~2~3E1FBD62-AB28-4A3C-93D0-5D509AC308D9", "_cd":"2:13577431", "_serial":"98", "timestamp": "2019-05-16 16:42:40.632", "id":"10329", "version":"0", "environment":"Production", "service_level":"DC - Business Premium", "company_id":"37", "top_service":"NO", "name":"GSOC-LOCAL SECURITY INCIDENT-POLICY VIOLATION (DE)", "splunk_server":"Danieles-MBP.station", "index":"main", "source":"dahsboard", "_indextime":"1558017760", "_subsecond":".632", "linecount":"1", "_si":"Danieles-MBP.station,main", "host":"localhost", "_sourcetype":"string", "sourcetype":"string", "_time":"2019-05-16T16:42:40.632+02:00"} to topic: zzzzz</br> 
 sending: {"_bkt":"main~2~3E1FBD62-AB28-4A3C-93D0-5D509AC308D9", "_cd":"2:13577425", "_serial":"99", "timestamp": "2019-05-16 16:42:40.632", "id":"10328", "version":"0", "environment":"Production", "service_level":"AO-Basic", "company_id":"42", "top_service":"NO", "name":"VODAFONE LIVE PORTAL-TEST", "splunk_server":"Danieles-MBP.station", "index":"main", "source":"dahsboard", "_indextime":"1558017760", "_subsecond":".632", "linecount":"1", "_si":"Danieles-MBP.station,main", "host":"localhost", "_sourcetype":"string", "sourcetype":"string", "_time":"2019-05-16T16:42:40.632+02:00"} to topic: zzzzz</br> 
+``` 
 
 ### 4. Stop the gpsscli job when you want to finalize the writing on Greenplum </br> 
 
