@@ -24,16 +24,18 @@ There are some initialization phases in order for the software to work. </br></b
 I used a DBMS to bring some data into Splunk. I used DBConnect to bring some Greenplum/Postgresql into Splunk. Here you can follow the istructions: </br></br>
 https://subscription.packtpub.com/book/big_data_and_business_intelligence/9781788835237/1/ch01lvl1sec18/getting-data-from-databases-using-db-connect</br></br>
 The data I put into Splunk are of this type: </br></br>
-dashboard=# select * from services limit 5; </br></br>
+```
+dashboard=# select * from services limit 5; 
 
-  id  | version | environment  |     service_level      | company_id | top_service |             name  </br>            
-------+---------+--------------+------------------------+------------+-------------+------------------------------ </br>
- 2052 |       0 | Production   | DC - Basic             |          7 | NO          | IE-PCAT PRODUCTION-PROD </br>
- 2053 |       0 | Unknown-null | DC - Mission Critical  |         45 | NO          | ARCOR SERVERHOUSING </br>
- 2054 |       0 | Production   | DC - Business Standard |         37 | NO          | DE-NSS ATOLL-BE DB SYBASE </br>
- 2055 |       0 | Unknown-null | DC - Business Standard |         49 | NO          | VFUK INFRASTRUCTURE SECURITY </br>
- 2056 |       0 | Unknown-null | DC - Business Standard |         42 | NO          | SHARED KPI MEASURING </br>
+  id  | version | environment  |     service_level      | company_id | top_service |             name              
+------+---------+--------------+------------------------+------------+-------------+------------------------------ 
+ 2052 |       0 | Production   | DC - Basic             |          7 | NO          | IE-PCAT PRODUCTION-PROD 
+ 2053 |       0 | Unknown-null | DC - Mission Critical  |         45 | NO          | ARCOR SERVERHOUSING 
+ 2054 |       0 | Production   | DC - Business Standard |         37 | NO          | DE-NSS ATOLL-BE DB SYBASE 
+ 2055 |       0 | Unknown-null | DC - Business Standard |         49 | NO          | VFUK INFRASTRUCTURE SECURITY 
+ 2056 |       0 | Unknown-null | DC - Business Standard |         42 | NO          | SHARED KPI MEASURING 
 </br></br>
+```
 Once loaded into splunk it will start to generate events and you will start to see logs like this:
 ![Screenshot](./images/image1.png)
 
