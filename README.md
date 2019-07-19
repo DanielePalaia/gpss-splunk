@@ -1,5 +1,5 @@
 ## Introduction
-This software is intended to show how it is possible to integrate Splunk with Greenplum database. It exercises splunk java api 
+This software is intended to show how it is possible to integrate Splunk with Greenplum database. It exercises splunk java apis 
 to make searches or to take all logs stored in Splunk and ingest a Greenplum table in order to do some other more advanced analytics.</br>
 The ingestion is done using gpss and gpsscli functionalities of Greenplum.
 The software send all the logs on a kafka broker, and we need to start a gpsscli job in order to ingest a Greenplum table </br>
