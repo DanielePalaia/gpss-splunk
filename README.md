@@ -25,6 +25,7 @@ I used a DBMS to bring some data into Splunk. I used DBConnect to bring some Gre
 https://subscription.packtpub.com/book/big_data_and_business_intelligence/9781788835237/1/ch01lvl1sec18/getting-data-from-databases-using-db-connect</br></br>
 The data I put into Splunk are of this type: </br></br>
 dashboard=# select * from services limit 5; </br></br>
+
   id  | version | environment  |     service_level      | company_id | top_service |             name  </br>            
 ------+---------+--------------+------------------------+------------+-------------+------------------------------ </br>
  2052 |       0 | Production   | DC - Basic             |          7 | NO          | IE-PCAT PRODUCTION-PROD </br>
@@ -43,16 +44,17 @@ The software is gpsscli which is using Kafka. Start a kafka topic where you want
 ### 3. Create a Greenplum output table:
 I will show you how to bring the same data you put in Splunk back again in Greenplum from the Splunk logs. Create an output table with the same field as the input table. </br>
 In the example case we have: </br></br>
-CREATE TABLE public.services (</br>
-    id bigint NOT NULL,</br>
-    version bigint NOT NULL,</br>
-    environment character varying(255) NOT NULL,</br>
-    service_level character varying(22) NOT NULL,</br>
-    company_id bigint NOT NULL,</br>
-    top_service character varying(3) NOT NULL,</br>
-    name character varying(255) NOT NULL</br>
-);</br>
-
+```
+CREATE TABLE public.services (
+    id bigint NOT NULL,
+    version bigint NOT NULL,
+    environment character varying(255) NOT NULL,
+    service_level character varying(22) NOT NULL,
+    company_id bigint NOT NULL,
+    top_service character varying(3) NOT NULL,
+    name character varying(255) NOT NULL
+);
+```
 ### 4. Start gpss server and gpsscli:
 Start gpss server and set a gpsscli job which will listen on the specified broker and topic. In my case for example gpss yaml is the one specified:
 ```
@@ -99,8 +101,8 @@ You need also to create a .splunkrc  in your home directory specifying connectio
 
 ```
 host=localhost 
-#Splunk admin port (default: 8089) </br> 
-port=8089   </br> 
+#Splunk admin port (default: 8089) 
+port=8089   
 #Splunk username   
 username=daniele   
 #Splunk password   
