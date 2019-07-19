@@ -1,11 +1,19 @@
-## Summary
+## Introduction
 This software is intended to show how it is possible to integrate Splunk with Greenplum database. It exercises splunk java api 
-to make searches or to take all logs stored in Splunk and ingest a Greenplum table in order to do some other searches.</br>
+to make searches or to take all logs stored in Splunk and ingest a Greenplum table in order to do some other more advanced analytics.</br>
 The ingestion is done using gpss and gpsscli functionalities of Greenplum.
 The software send all the logs on a kafka broker, and we need to start a gpsscli job in order to ingest a Greenplum table </br>
+The software is using the following technologies: Java, Kafka, Greenplum and Greenplum streaming server. </br>
 
-https://gpdb.docs.pivotal.io/5160/greenplum-stream/loading-gpss.html</br>
-https://gpdb.docs.pivotal.io/5160/greenplum-stream/ref/gpsscli.html</br>
+The following reading can be useful to understand the scenario: </br></br>
+**Splunk API:** </br>
+https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Streams.html </br>
+**Kafka:**  </br>
+https://kafka.apache.org/ </br>
+**Greenplum GPSS:**</br>
+https://gpdb.docs.pivotal.io/5160/greenplum-stream/overview.html</br>
+https://gpdb.docs.pivotal.io/5160/greenplum-stream/api/dev_client.html</br>
+![Screenshot](./images/image2.png)
 
 It uses GPSS to ingest data in Greenplum so it works just for Greenplum 5.16 or above.</br>
 There are some initialization phases in order for the software to work. </br></br>
