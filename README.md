@@ -56,6 +56,7 @@ CREATE TABLE public.services (</br>
 ### 4. Start gpss server and gpsscli:
 Start gpss server and set a gpsscli job which will listen on the specified broker and topic. In my case for example gpss yaml is the one specified:
 
+```
 DATABASE: dashboard</br>
 USER: gpadmin</br>
 HOST: localhost</br>
@@ -89,7 +90,8 @@ KAFKA:</br>
           EXPRESSION: (jdata->>'name')::varchar(255)</br>
 
    COMMIT:</br>
-     MAX_ROW: 1000</br></br>
+     MAX_ROW: 1000
+     ```    
      **Note: Messages are posted in Kakfa as Json in order to give the maximum flexibity on what we need and what we don't**</br>     
      
 ### 5. The software is written in Java so you need a JVM installed as well as Splunk
