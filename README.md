@@ -17,7 +17,7 @@ https://gpdb.docs.pivotal.io/5160/greenplum-stream/api/dev_client.html</br>
 
 It uses GPSS to ingest data in Greenplum so it works just for Greenplum 5.16 or above.</br>
 There are some initialization phases in order for the software to work. </br></br>
-**Note: This software is doing some transformations on the event field in order to put some meaningful fields in Greenplum, so it maybe not work if the event fields is represented in different way (solution maybe to just put all event as single table field)**
+**Note: This software is doing some transformations on the event field of splunk in order to put some meaningful fields in Greenplum, so it maybe not work if the event fields is represented in different way (solution maybe to just put all event as single table field)**
 
 ## Prerequisites:
 ### 1. Bring some data to Splunk: 
